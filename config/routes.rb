@@ -211,6 +211,7 @@ Rails.application.routes.draw do
       # Production API endpoints
       resources :accounts, only: [ :index ]
       resources :transactions, only: [ :index, :show, :create, :update, :destroy ]
+      resources :imports, only: [ :create ]
       resource :usage, only: [ :show ], controller: "usage"
 
       resources :chats, only: [ :index, :show, :create, :update, :destroy ] do
@@ -255,6 +256,7 @@ Rails.application.routes.draw do
     post "plaid"
     post "plaid_eu"
     post "stripe"
+    post "integration_import"
   end
 
   get "redis-configuration-error", to: "pages#redis_configuration_error"
