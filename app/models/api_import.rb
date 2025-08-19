@@ -1,8 +1,23 @@
 class ApiImport < Import
-  # Store metadata about the source application
-  store_accessor :config, :source_app_name, :source_app_version, :auth_token_hash
-
+  # Store metadata about the source application in the config JSON field  
   validates :source_app_name, presence: true
+
+  # Override to add source_app_name accessor
+  def source_app_name
+    config&.dig("source_app_name")
+  end
+
+  def source_app_name=(value)
+    self.config = (config || {}).merge("source_app_name" => value)
+  end
+
+  def source_app_version
+    config&.dig("source_app_version")
+  end
+
+  def source_app_version=(value)
+    self.config = (config || {}).merge("source_app_version" => value)
+  end
 
   def import!
     transaction do

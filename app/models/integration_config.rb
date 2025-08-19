@@ -58,22 +58,28 @@ class IntegrationConfig < ApplicationRecord
     return { success: false, error: "Invalid webhook URL" } unless validate_webhook_url
 
     begin
-      response = HTTParty.post(
-        webhook_url,
-        body: {
-          test: true,
-          timestamp: Time.current.iso8601,
-          integration_id: id
-        }.to_json,
-        headers: {
-          'Content-Type' => 'application/json',
-          'X-Integration-Token' => api_token
-        },
-        timeout: 10
-      )
+      require 'net/http'
+      require 'uri'
+      require 'json'
+      
+      uri = URI.parse(webhook_url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = (uri.scheme == 'https')
+      http.read_timeout = 10
+      
+      request = Net::HTTP::Post.new(uri.path)
+      request['Content-Type'] = 'application/json'
+      request['X-Integration-Token'] = api_token
+      request.body = {
+        test: true,
+        timestamp: Time.current.iso8601,
+        integration_id: id
+      }.to_json
 
-      if response.success?
-        { success: true, status_code: response.code }
+      response = http.request(request)
+
+      if response.code.to_i >= 200 && response.code.to_i < 300
+        { success: true, status_code: response.code.to_i }
       else
         { success: false, error: "HTTP #{response.code}", response: response.body }
       end
