@@ -12,3 +12,10 @@ account:
   family: dylan_family
   type: AccountImport
   status: pending
+
+api:
+  family: dylan_family
+  type: ApiImport
+  status: pending
+  source_app_name: "Test Banking App"
+  source_app_version: "1.0.0"

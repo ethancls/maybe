@@ -1,0 +1,24 @@
+banking_app:
+  family: dylan_family
+  name: "Banking Integration"
+  app_type: "banking"
+  status: "active"
+  api_token: "test_token_123456789"
+  description: "Test banking integration"
+  config:
+    webhook_url: "https://example.com/webhook"
+
+accounting_app:
+  family: melanie_family
+  name: "Accounting Software"
+  app_type: "accounting"
+  status: "active"
+  api_token: "test_token_987654321"
+  description: "Test accounting integration"
+
+inactive_app:
+  family: dylan_family
+  name: "Inactive App"
+  app_type: "custom"
+  status: "inactive"
+  api_token: "inactive_token_111"
